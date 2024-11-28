@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+.vs/
+YoloPolygon/obj/
+lib/AltoControls/AltoControls/obj/
+lib/AltoControls/AltoControls/bin/
