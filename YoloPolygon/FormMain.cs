@@ -132,8 +132,15 @@ namespace YoloPolygon
         {
             if (e.KeyCode == Keys.Tab)
             {
-                lstPolygon.SelectedIndex = 0;
-                lstImg.EnsureVisible(0);
+                if(lstPolygon.Items.Count > 0)
+                {
+                    lstPolygon.SelectedIndex = 0;
+                }
+                if(lstImg.Items.Count > 0)
+                {
+                    lstImg.EnsureVisible(0);
+                }
+                
             }
         }
 
