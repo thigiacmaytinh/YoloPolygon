@@ -16,7 +16,7 @@
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>rect.ico</ApplicationIcon>
+    <ApplicationIcon>polygon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -173,6 +173,7 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="polygon.ico" />
     <Content Include="rect.ico" />
     <None Include="Resources\add32x32.png" />
     <None Include="Resources\unorderedlist16.png" />
