@@ -870,56 +870,6 @@ namespace YoloPolygon
 
 
             lstImg.EndUpdate();
-
-            //if (fileNotAdd.Count > 0)
-            //{
-            //    lblMessage.Text = "add new images in directory";
-            //    string files = "";
-            //    for (int i = 0; i < Math.Min(10, fileNotAdd.Count); i++)
-            //    {
-            //        files += fileNotAdd[i] + "\n";
-            //    }
-            //    if (fileNotAdd.Count > 10)
-            //        files += "...";
-            //    if (MessageBox.Show("Do you want add " + fileNotAdd.Count + " new images in folder " + txtFolder.Text + " ? \n" + files, "Detected new images in folder", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
-            //    {
-            //        int count = lstImg.Items.Count;
-            //        lstImg.Items.AddRange(fileNotAdd.ToArray());
-            //        lblLstImg.Text = lstImg.SelectedIndex + 1 + " / " + lstImg.Items.Count;
-            //        SaveToFile();
-            //        lstImg.TopIndex = count - 3;
-            //        lstImg.SelectedIndex = count;
-            //        MessageBox.Show("Added " + fileNotAdd.Count + " new images");
-            //    }
-            //    else
-            //    {
-            //        string currentDir = TGMTutil.CorrectPath(txtFolder.Text);
-            //        string newdir = currentDir + "notmarked\\";
-            //        if (!Directory.Exists(newdir))
-            //            Directory.CreateDirectory(newdir);
-
-            //        int count = 0;
-            //        string error = "";
-            //        foreach (string filePath in fileNotAdd)
-            //        {
-            //            try
-            //            {
-            //                File.Move(currentDir + filePath, newdir + filePath);
-            //                count++;
-            //            }
-            //            catch (Exception ex)
-            //            {
-            //                Debug.WriteLine(ex.Message);
-            //                error = ex.Message;
-            //            }
-            //        }
-            //        string message = "Moved " + count + " images to folder " + newdir;
-            //        if (error != "")
-            //            message += ".\n\n Something else has error: " + error;
-            //        MessageBox.Show(message);
-            //    }
-            //}
-
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
