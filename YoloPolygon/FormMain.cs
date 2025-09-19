@@ -64,6 +64,8 @@ namespace YoloPolygon
 
         int m_polygonIdx = -1;
         int m_pointIdx = -1;
+        int m_point1Idx = -1;
+        int m_point2Idx = -1;
 
 
         int mTotalRects = 0;
@@ -628,6 +630,26 @@ namespace YoloPolygon
                 {
                     lstPoint.SelectedIndex = m_pointIdx;
                 }                
+            }
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private void pictureBox1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (this.Cursor == Cursors.Cross)
+            {
+                Point newPoint = e.Location;
+                m_polygon.pointFs.Insert(m_point1Idx + 1, ConvertToRealPoint(newPoint));
+                m_polygons[m_polygonIdx] = m_polygon;
+                lstPolygon.Items[m_polygonIdx] = m_polygon.ToString();
+                m_pointIdx = m_point1Idx + 1;
+
+                if(lstPoint.Items.Count == 0)
+                {
+                    ShowPoints(m_polygon);
+                }
+                lstPoint.SelectedIndex = m_pointIdx;
             }
         }
 
@@ -1389,35 +1411,23 @@ namespace YoloPolygon
                     m_colisionLine = CheckColision(p, line);
                     if (m_colisionLine == Colision.All)
                     {
-                        //m_polygonIdx = i;
-                        //m_pointIdx = j;
-                        //m_polygon = m_polygons[m_polygonIdx];
+                        m_polygonIdx = i;
+                        m_pointIdx = j;
+                        m_polygon = m_polygons[m_polygonIdx];
 
 
                         this.Cursor = Cursors.Cross;
+                        m_point1Idx = j;
+                        m_point2Idx = j + 1;
 
                     }
-                    //else if (m_colision == Colision.TopLeft || m_colision == Colision.BotRight)
-                    //    this.Cursor = Cursors.SizeNWSE;
-                    //else if (m_colision == Colision.TopRight || m_colision == Colision.BotLeft)
-                    //    this.Cursor = Cursors.SizeNESW;
-                    //else if (m_colision == Colision.Left || m_colision == Colision.Right)
-                    //    this.Cursor = Cursors.SizeWE;
-                    //else if (m_colision == Colision.Top || m_colision == Colision.Bottom)
-                    //    this.Cursor = Cursors.SizeNS;
-                    //else if (m_colision == Colision.NewRect)
-                    //    this.Cursor = Cursors.Hand;
                     else
+                    {
                         this.Cursor = Cursors.Default;
-
+                    }
 
                     if (m_colisionLine != Colision.None)
-                    {
-                        //    if (j != lstPoint.SelectedIndex)
-                        //    {
-                        //        this.Cursor = Cursors.SizeAll;
-                        //    }
-                        //    newPointIdx = j;
+                    {                        
                         return;
                     }
                 }
