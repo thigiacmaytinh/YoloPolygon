@@ -62,6 +62,7 @@
     <Compile Include="..\lib\TGMTcs\src\TGMTutil.cs">
       <Link>TGMTcs\TGMTutil.cs</Link>
     </Compile>
+    <Compile Include="Const.cs" />
     <Compile Include="CustomComboBox.cs">
       <SubType>UserControl</SubType>
     </Compile>

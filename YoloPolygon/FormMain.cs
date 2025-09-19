@@ -48,7 +48,8 @@ namespace YoloPolygon
             BotLeft,
             BotRight
         }
-        Colision m_colision = Colision.None;
+        Colision m_colisionPoint = Colision.None;
+        Colision m_colisionLine = Colision.None;
 
 
         int ANCHOR_WIDTH = 10;
@@ -58,7 +59,7 @@ namespace YoloPolygon
 
         //public string textFilePath;
         Point m_currentPoint;
-        Point startPoint;
+        Point m_startPoint;
         bool m_isMouseDown = false;
 
         int m_polygonIdx = -1;
@@ -67,8 +68,6 @@ namespace YoloPolygon
 
         int mTotalRects = 0;
         bool m_isFirstLoading = true;
-
-        //use for draw on picture box
 
 
 
@@ -415,23 +414,23 @@ namespace YoloPolygon
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             //draw new rect
-            //if (g_isMouseDown)
-            //{
-            //    if (g_colisionState == Colision.None)
-            //    {
-            //        int w = currentPoint.X - startPoint.X;
-            //        int h = currentPoint.Y - startPoint.Y;
-            //        if (w > 0 && h > 0)
-            //        {
-            //            e.Graphics.DrawRectangle(Pens.Blue, startPoint.X, startPoint.Y, w, h);
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    e.Graphics.DrawLine(Pens.Black, new Point(0, currentPoint.Y), new Point(pictureBox1.Width - 1, currentPoint.Y));
-            //    e.Graphics.DrawLine(Pens.Black, new Point(currentPoint.X, 0), new Point(currentPoint.X, pictureBox1.Height - 1));
-            //}
+            if (m_isMouseDown)
+            {
+                if (m_colisionPoint == Colision.None)
+                {
+                    int w = m_currentPoint.X - m_startPoint.X;
+                    int h = m_currentPoint.Y - m_startPoint.Y;
+                    if (w > 0 && h > 0)
+                    {
+                        e.Graphics.DrawRectangle(Pens.Blue, m_startPoint.X, m_startPoint.Y, w, h);
+                    }
+                }
+            }
+            else
+            {
+                e.Graphics.DrawLine(Pens.Black, new Point(0, m_currentPoint.Y), new Point(pictureBox1.Width - 1, m_currentPoint.Y));
+                e.Graphics.DrawLine(Pens.Black, new Point(m_currentPoint.X, 0), new Point(m_currentPoint.X, pictureBox1.Height - 1));
+            }
 
 
             int offset = ANCHOR_WIDTH / 2;
@@ -500,6 +499,42 @@ namespace YoloPolygon
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (pictureBox1.Image == null)
+                return;
+
+            timer1.Start();
+            m_startPoint = e.Location;
+            m_isMouseDown = true;
+            //if (lstPolygon.SelectedIndex > -1)
+            //{
+            //    Point point = GetCurrentPoint();
+            //    mDistanceCurrentRectToMouse = new Size(e.Location.X - point.X, e.Location.Y - point.Y);
+            //    //mCurrentRectBottomRight = new Point(rect.X + rect.Width, rect.Y + rect.Height);
+            //}
+
+            if(m_colisionPoint == Colision.All)
+            {
+                if(m_pointIdx == -1)
+                {
+                    m_polygon = new Polygon();
+                    m_polygon.classID = cb_classes.SelectedIndex;
+                    m_polygon.status = Status.Editing;
+                    m_polygon.pointFs.Add(ConvertToRealPoint(e.Location));
+                    m_pointIdx = 0;
+                }
+                else
+                {
+
+                }
+                Point point = GetCurrentPoint();
+                mDistanceCurrentRectToMouse = new Size(e.Location.X - point.X, e.Location.Y - point.Y);
+            }
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
             if (pictureBox1.Image == null)
@@ -510,12 +545,12 @@ namespace YoloPolygon
             m_currentPoint = Clamp(e.Location, new Point(0, 0), new Point(pictureBox1.Width, pictureBox1.Height));
             m_isMouseDown = false;
             //draw new rect
-            if (m_colision == Colision.None)
+            if (m_colisionPoint == Colision.None)
             {
-                int x = startPoint.X;
-                int y = startPoint.Y;
-                int w = Math.Abs(m_currentPoint.X - startPoint.X);
-                int h = Math.Abs(m_currentPoint.Y - startPoint.Y);
+                int x = m_startPoint.X;
+                int y = m_startPoint.Y;
+                int w = Math.Abs(m_currentPoint.X - m_startPoint.X);
+                int h = Math.Abs(m_currentPoint.Y - m_startPoint.Y);
                 int cx = x + w / 2;
                 int cy = y + h / 2;
 
@@ -554,37 +589,19 @@ namespace YoloPolygon
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (pictureBox1.Image == null)
-                return;
-
-            timer1.Start();
-            startPoint = e.Location;
-            m_isMouseDown = true;
-            if (lstPolygon.SelectedIndex > -1)
-            {
-                Point point = GetCurrentPoint();
-                mDistanceCurrentRectToMouse = new Size(e.Location.X - point.X, e.Location.Y - point.Y);
-                //mCurrentRectBottomRight = new Point(rect.X + rect.Width, rect.Y + rect.Height);
-            }
-        }
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////
-
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
             if (pictureBox1.Image == null)
                 return;
 
             m_currentPoint = Clamp(e.Location, new Point(0, 0), new Point(pictureBox1.Width, pictureBox1.Height));
-            int dx = m_currentPoint.X - startPoint.X;
-            int dy = m_currentPoint.Y - startPoint.Y;
+            int dx = m_currentPoint.X - m_startPoint.X;
+            int dy = m_currentPoint.Y - m_startPoint.Y;
 
 
             if (m_isMouseDown)
             {
-                if (m_colision == Colision.All && m_pointIdx != -1)
+                if (m_colisionPoint == Colision.All && m_pointIdx != -1)
                 {
                     MovePoint(m_currentPoint);
                 }
@@ -610,9 +627,7 @@ namespace YoloPolygon
                 if(m_pointIdx != -1)
                 {
                     lstPoint.SelectedIndex = m_pointIdx;
-                }
-                //lstPoint.SelectedIndex = m_pointIdx;
-                //lstPoint.Focus();
+                }                
             }
         }
 
@@ -1219,6 +1234,56 @@ namespace YoloPolygon
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        Colision CheckColision(Point cursor, Line line)
+        {
+            double distance = 0;
+
+            // If line is just a point
+            if (line.p1 == line.p2)
+            {
+                distance = Distance(cursor, line.p1);
+            }
+            else
+            {
+                double A = cursor.X - line.p1.X;
+                double B = cursor.Y - line.p1.Y;
+                double C = line.p2.X - line.p1.X;
+                double D = line.p2.Y - line.p1.Y;
+
+                double dot = A * C + B * D;
+                double len_sq = C * C + D * D;
+                double param = (len_sq != 0) ? dot / len_sq : -1;
+
+                double xx, yy;
+
+                if (param < 0)
+                {
+                    xx = line.p1.X;
+                    yy = line.p1.Y;
+                }
+                else if (param > 1)
+                {
+                    xx = line.p2.X;
+                    yy = line.p2.Y;
+                }
+                else
+                {
+                    xx = line.p1.X + param * C;
+                    yy = line.p1.Y + param * D;
+                }
+
+                distance = Distance(cursor, new Point((int)xx, (int)yy));
+            }
+
+            if (distance < 5)
+                return Colision.All;
+            else
+                return Colision.None;
+
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         Point GetCurrentPoint()
         {
             if (m_pointIdx == -1 && lstPoint.Items.Count > 0)
@@ -1244,7 +1309,7 @@ namespace YoloPolygon
         {
             if (lstPolygon.Items.Count == 0)
             {
-                m_colision = Colision.None;
+                m_colisionPoint = Colision.None;
                 return;   
             }
             //if(lstPolygon.SelectedIndex < 0)
@@ -1269,8 +1334,8 @@ namespace YoloPolygon
 
                 for (int j = 0; j < drawPoints.Count; j++)
                 {
-                    m_colision = CheckColision(p, drawPoints[j]);
-                    if (m_colision == Colision.All)
+                    m_colisionPoint = CheckColision(p, drawPoints[j]);
+                    if (m_colisionPoint == Colision.All)
                     {
                         m_polygonIdx = i;
                         m_pointIdx = j;
@@ -1294,7 +1359,7 @@ namespace YoloPolygon
                         this.Cursor = Cursors.Default;
 
 
-                    if (m_colision != Colision.None)
+                    if (m_colisionPoint != Colision.None)
                     {
                     //    if (j != lstPoint.SelectedIndex)
                     //    {
@@ -1306,9 +1371,59 @@ namespace YoloPolygon
                 }
             }
 
-            
 
-            
+            //check colision with line
+            for (int i = 0; i < m_polygons.Count; i++)
+            {
+                Polygon po = m_polygons[i];
+
+                List<Point> drawPoints = ConvertToDrawPoint(po.pointFs);
+
+
+                for (int j = 0; j < drawPoints.Count - 1; j++)
+                {
+                    Point p1 = drawPoints[j];
+                    Point p2 = drawPoints[j + 1];
+                    Line line = new Line(p1, p2);
+
+                    m_colisionLine = CheckColision(p, line);
+                    if (m_colisionLine == Colision.All)
+                    {
+                        //m_polygonIdx = i;
+                        //m_pointIdx = j;
+                        //m_polygon = m_polygons[m_polygonIdx];
+
+
+                        this.Cursor = Cursors.Cross;
+
+                    }
+                    //else if (m_colision == Colision.TopLeft || m_colision == Colision.BotRight)
+                    //    this.Cursor = Cursors.SizeNWSE;
+                    //else if (m_colision == Colision.TopRight || m_colision == Colision.BotLeft)
+                    //    this.Cursor = Cursors.SizeNESW;
+                    //else if (m_colision == Colision.Left || m_colision == Colision.Right)
+                    //    this.Cursor = Cursors.SizeWE;
+                    //else if (m_colision == Colision.Top || m_colision == Colision.Bottom)
+                    //    this.Cursor = Cursors.SizeNS;
+                    //else if (m_colision == Colision.NewRect)
+                    //    this.Cursor = Cursors.Hand;
+                    else
+                        this.Cursor = Cursors.Default;
+
+
+                    if (m_colisionLine != Colision.None)
+                    {
+                        //    if (j != lstPoint.SelectedIndex)
+                        //    {
+                        //        this.Cursor = Cursors.SizeAll;
+                        //    }
+                        //    newPointIdx = j;
+                        return;
+                    }
+                }
+            }
+
+
             this.Cursor = Cursors.Default;
         }
 
@@ -1755,7 +1870,12 @@ namespace YoloPolygon
             pictureBox1.Refresh();
         }
 
-        
+        private double Distance(Point p1, Point p2)
+        {
+            int dx = p1.X - p2.X;
+            int dy = p1.Y - p2.Y;
+            return Math.Sqrt(dx * dx + dy * dy);
+        }
     }
 }
 

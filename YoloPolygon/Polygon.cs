@@ -17,6 +17,17 @@ namespace YoloPolygon
         public double Width, Height;
     }
 
+    public class Line
+    {
+        public Point p1, p2;
+
+        public Line(Point _p1, Point _p2)
+        {
+            this.p1 = _p1;
+            this.p2 = _p2;
+        }
+    }
+
     public class Polygon
     {
         public int classID;
@@ -32,6 +43,8 @@ namespace YoloPolygon
         //public Point centerF;
         public List<Point> points;
         public List<PointF> pointFs;
+
+        public string status;
 
         public string ToString()
         {
