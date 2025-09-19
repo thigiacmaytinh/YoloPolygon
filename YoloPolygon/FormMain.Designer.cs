@@ -80,6 +80,7 @@
             this.lstImg.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
             this.lstImg.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstImg.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lstImg.FullRowSelect = true;
             this.lstImg.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.lstImg.HideSelection = false;
@@ -111,7 +112,7 @@
             this.lstPolygon.Size = new System.Drawing.Size(346, 132);
             this.lstPolygon.TabIndex = 7;
             this.lstPolygon.TabStop = false;
-            this.lstPolygon.SelectedIndexChanged += new System.EventHandler(this.lstRect_SelectedIndexChanged);
+            this.lstPolygon.SelectedIndexChanged += new System.EventHandler(this.lstPolygon_SelectedIndexChanged);
             this.lstPolygon.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstRect_KeyDown);
             // 
             // statusStrip1
@@ -443,7 +444,9 @@
             // lstPoint
             // 
             this.lstPoint.Dock = System.Windows.Forms.DockStyle.Right;
+            this.lstPoint.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lstPoint.FormattingEnabled = true;
+            this.lstPoint.ItemHeight = 16;
             this.lstPoint.Location = new System.Drawing.Point(1152, 126);
             this.lstPoint.Name = "lstPoint";
             this.lstPoint.Size = new System.Drawing.Size(156, 534);

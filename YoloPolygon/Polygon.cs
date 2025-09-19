@@ -9,34 +9,70 @@ namespace YoloPolygon
 {
     public class PointF
     {
-        public float X, Y;
+        public double X, Y;
     }
+
+    public class SizeF
+    {
+        public double Width, Height;
+    }
+
     public class Polygon
     {
         public int classID;
-        public int cx, cy; //draw
-        public double cxf, cyf;
-        public int w, h; //draw
-        public double wf, hf;
-        public List<Point> drawPoints;
-        public List<PointF> pointfs;
+        //public int cx, cy; //draw
+        //public double cxf, cyf;
+        //public int w, h; //draw
+        //public Size size;
+        //public SizeF sizeF;
+
+
+
+        //public Point center;
+        //public Point centerF;
+        public List<Point> points;
+        public List<PointF> pointFs;
 
         public string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append(classID.ToString() + ' ');
-            sb.Append(cx.ToString() + ' ');
-            sb.Append(cy.ToString() + ' ');
-            sb.Append(w.ToString() + ' ');
-            sb.Append(h.ToString());
+            sb.Append(classID + " ");
 
-            for (int i = 0; i < pointfs.Count; i++)
+            for (int i = 0; i < pointFs.Count; i++)
             {
-                PointF p = pointfs[i];
+                PointF p = pointFs[i];
                 sb.Append(' ' + p.X + ' ' + p.Y);
             }
 
             return sb.ToString();
         }
+
+        //public Rectangle GetBounding()
+        //{
+        //    Rectangle bounding = new Rectangle(w, h, 0, 0);
+
+        //    for (int i = 0; i < points.Count; i++)
+        //    {
+        //        Point p = points[i];
+        //        if (p.X < bounding.X) bounding.X = p.X;
+        //        if (p.Y < bounding.Y) bounding.Y = p.Y;
+        //        if (p.X > bounding.X + bounding.Width) bounding.Width = p.X - bounding.X;
+        //        if (p.Y > bounding.Y + bounding.Height) bounding.Height = p.Y - bounding.Y;
+        //    }
+
+        //    w = bounding.Width;
+        //    h = bounding.Height;
+
+        //    cx = bounding.X + (w / 2);
+        //    cy = bounding.Y + (h / 2);
+
+        //    //Rectangle r = new Rectangle();
+        //    //r.Width = w;
+        //    //r.Height = h;
+        //    //r.X = cx - r.Width / 2;
+        //    //r.Y = cy - r.Height / 2;
+
+        //    return bounding;
+        //}
     }
 }
