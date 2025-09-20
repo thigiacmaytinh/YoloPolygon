@@ -31,13 +31,6 @@ namespace YoloPolygon
     public class Polygon
     {
         public int classID;
-        //public int cx, cy; //draw
-        //public double cxf, cyf;
-        //public int w, h; //draw
-        //public Size size;
-        //public SizeF sizeF;
-
-
 
         //public Point center;
         //public Point centerF;
@@ -46,46 +39,24 @@ namespace YoloPolygon
 
         public string status;
 
-        public string ToString()
+        public Polygon()
+        {
+            points = new List<Point>();
+            pointFs = new List<PointF>();
+        }
+
+        public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append(classID + " ");
+            sb.Append(classID);
 
             for (int i = 0; i < pointFs.Count; i++)
             {
                 PointF p = pointFs[i];
-                sb.Append(' ' + p.X + ' ' + p.Y);
+                sb.Append(" " + p.X + " " + p.Y);
             }
 
             return sb.ToString();
         }
-
-        //public Rectangle GetBounding()
-        //{
-        //    Rectangle bounding = new Rectangle(w, h, 0, 0);
-
-        //    for (int i = 0; i < points.Count; i++)
-        //    {
-        //        Point p = points[i];
-        //        if (p.X < bounding.X) bounding.X = p.X;
-        //        if (p.Y < bounding.Y) bounding.Y = p.Y;
-        //        if (p.X > bounding.X + bounding.Width) bounding.Width = p.X - bounding.X;
-        //        if (p.Y > bounding.Y + bounding.Height) bounding.Height = p.Y - bounding.Y;
-        //    }
-
-        //    w = bounding.Width;
-        //    h = bounding.Height;
-
-        //    cx = bounding.X + (w / 2);
-        //    cy = bounding.Y + (h / 2);
-
-        //    //Rectangle r = new Rectangle();
-        //    //r.Width = w;
-        //    //r.Height = h;
-        //    //r.X = cx - r.Width / 2;
-        //    //r.Y = cy - r.Height / 2;
-
-        //    return bounding;
-        //}
     }
 }
