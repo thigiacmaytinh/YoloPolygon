@@ -480,9 +480,9 @@ namespace YoloPolygon
                 
                     }
 
-                    if(m_polygon.status == Status.Editing)
+                    if (m_polygon.status == Status.Editing)
                     {
-                        for(int j=0; j < drawPoints.Count - 1; j++)
+                        for (int j = 0; j < drawPoints.Count - 1; j++)
                         {
                             Point p1 = drawPoints[j];
                             Point p2 = drawPoints[j + 1];
@@ -492,7 +492,10 @@ namespace YoloPolygon
                         e.Graphics.DrawLine(blue_dash, drawPoint, m_currentPoint);
                     }
 
-                    e.Graphics.DrawString(className, myFont, redBrush, drawPoints[0].X, drawPoints[0].Y);
+                    if (drawPoints.Count > 0)
+                    {
+                        e.Graphics.DrawString(className, myFont, redBrush, drawPoints[0].X, drawPoints[0].Y);
+                    }
                 }
                 else
                 {
@@ -500,14 +503,16 @@ namespace YoloPolygon
                     if (drawPoints.Count == 0)
                         continue;
 
-                    if(drawPoints.Count > 2)
+                    if (drawPoints.Count > 2)
                     {
                         e.Graphics.DrawPolygon(blue_thick, drawPoints.ToArray());
                         e.Graphics.FillPolygon(blue_brush_soft, drawPoints.ToArray());
                     }
 
-                    e.Graphics.DrawString(className, myFont, redBrush, drawPoints[0].X, drawPoints[0].Y);
-
+                    if (drawPoints.Count > 0)
+                    {
+                        e.Graphics.DrawString(className, myFont, redBrush, drawPoints[0].X, drawPoints[0].Y);
+                    }
 
                     for (int j = 0; j < drawPoints.Count; j++)
                     {
@@ -983,9 +988,6 @@ namespace YoloPolygon
         //write list image to file
         void SaveToFile()
         {
-            if (lstImg.Items.Count == 0 || lstImg.SelectedIndices.Count == 0)
-                return;
-
             TGMTregistry.GetInstance().SaveValue("imageIdx", lstImg.SelectedIndices[0]);
 
             lblMessage.Text = "Saving...";
@@ -998,11 +1000,10 @@ namespace YoloPolygon
             if (content.Length > 0)
                 content = content.Substring(0, content.Length - 1);
 
-            if (content != "")
-            {
-                string txtPath = m_labelDir + Path.GetFileNameWithoutExtension(mCurrentImgName) + ".txt";
-                File.WriteAllText(txtPath, content);
-            }
+
+            string txtPath = m_labelDir + Path.GetFileNameWithoutExtension(mCurrentImgName) + ".txt";
+            File.WriteAllText(txtPath, content);
+            
 
             PrintSuccess("Saved");
             timerClear.Start();
